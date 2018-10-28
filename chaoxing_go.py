@@ -6,10 +6,6 @@ import hashlib
 
 
 class chaoxing:
-    # 使用说明：
-    # cx = chaoxing(parameter) 请传入你的超星cookie
-    # 初始化后请先使用load函数
-    # 请参考下面demo
     def __init__(self, cookie):
         self.headers = {'Cookie': cookie,
                         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36'}
@@ -39,7 +35,10 @@ class chaoxing:
         # xxx
         list = self.list[index]
         json_mArg = json.loads("{}")
-        for i in range(0, 3):
+        for i in range(0, 4):
+            if (i == 3):
+                print("无需学习")
+                return
             print("检测页面：" + str(i))
             html_1 = requests.get(
                 url="http://mooc1-1.chaoxing.com/knowledge/cards?clazzid=%s&courseid=%s&knowledgeid=%s&num=%d&v=20160407-1" % (
@@ -50,7 +49,7 @@ class chaoxing:
                 json_mArg = json.loads("{%s}" % (cap_1.group(1)))
             except:
                 continue
-            if ("property" in json_mArg["attachments"][0].keys() and "name" in json_mArg["attachments"][0][
+            if (len(json_mArg["attachments"]) == 1 and "name" in json_mArg["attachments"][0][
                 "property"].keys()):
                 if ("isPassed" in json_mArg["attachments"][0].keys() and json_mArg["attachments"][0][
                     "isPassed"] == False):
@@ -58,6 +57,8 @@ class chaoxing:
                     return
                 else:
                     break
+            else:
+                continue
         html_2 = requests.get(url="https://mooc1-1.chaoxing.com/ananas/status/%s?k=%s&_dc=%d" % (
             json_mArg['attachments'][0]['objectId'], json_mArg['defaults']['fid'],
             int(round(time.time() * 1000))), headers=self.headers).text
