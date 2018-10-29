@@ -49,10 +49,10 @@ class chaoxing:
                 json_mArg = json.loads("{%s}" % (cap_1.group(1)))
             except:
                 continue
-            if (len(json_mArg["attachments"]) == 1 and "name" in json_mArg["attachments"][0][
+            if (len(json_mArg["attachments"]) > 0 and "name" in json_mArg["attachments"][0][
                 "property"].keys()):
                 if ("isPassed" in json_mArg["attachments"][0].keys() and json_mArg["attachments"][0][
-                    "isPassed"] == False):
+                    "isPassed"] == True):
                     print("已经学习过")
                     return
                 else:
@@ -95,3 +95,7 @@ while True:
     if (text == "q"):
         break
     cx.study(int(text))
+
+#for i in range(0,135):
+#    cx.study(i)
+#    time.sleep(60)
